@@ -1,98 +1,134 @@
-import React, {Component} from 'react'
+import React, {useState} from 'react'
 import { Card } from 'react-bootstrap';
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import axios from 'axios'
 
-class HomeScreen extends Component {    
-    constructor(props) {
-        super(props)
-        this.state = {
-            data: new Date(),
-            username: '',
-            email:'',
-            phone: '',
-            message_date: new Date(),
-            sender: '',
-            receiver: '',
-            content: '',
-        }
+const HomeScreen = () => {    
+    // constructor(props) {
+    //     super(props)
+    //     this.state = {
+    //         users: [{
+    //             name: '',
+    //             email:'',
+    //             phone: '',
+    //         }],
+
+    //         data: new Date(),
+
+    //         message: [{
+    //             message_date: new Date(),
+    //             sender: '',
+    //             receiver: '',
+    //             content: '',
+    //         }]
+    //     }
+    // }
+
+    // changeDataHandler = (event) => {
+    //     this.setState({data: event});
+    // }
+
+    // changeHandler = (event) => {
+    //     this.setState({[event.target.name]: event.target.value});
+
+    // }
+
+    // submitHandler = (event) => {
+    //     event.preventDefault()
+    //     alert(`${this.state.name} sent the message to ${this.state.receiver}`)
+    //     axios.post('http://localhost:5000/post', this.state)
+    //     .then(res => {
+    //         console.log(res);
+    //     })
+    //     .catch(err => {
+    //         console.log(err);
+    //     })
+    // }
+
+    
+    const [users, setUsers] = useState({
+        name: '',
+        email:'',
+        phone: '',
+    })
+
+    const date = new Date()
+
+    const [message, setMessage] = useState({
+        date: new Date(),
+        sender: '',
+        receiver: '',
+        content: '',
+    })
+
+    const onChangeUser = (e) => {
+        setUsers({...users, [e.target.name]: e.target.value})
     }
 
-    changeDataHandler = (event) => {
-        this.setState({data: event});
+    const onChangeMessage = (e) => {
+        setMessage({...message, [e.target.name]: e.target.value})
     }
 
-    changeHandler = (event) => {
-        this.setState({[event.target.name]: event.target.value});
+    const submitHandler = (e) => {
+        e.preventDefault()
+        alert(`${users.name} sent the message to ${message.receiver}`)
+        const my_data = {...users, ...date, ...message}
 
+        const my_post = axios.post('http://localhost:5000/post', JSON.stringify(my_data))
+        console.log(my_post)
     }
 
-    submitHandler = (event) => {
-        event.preventDefault()
-        alert(`${this.state.username} sent the message to ${this.state.receiver}`)
-        axios.post('http://localhost:5000/post', JSON.stringify(this.state))
-        .then(res => {
-            console.log(res);
-        })
-        .catch(err => {
-            console.log(err);
-        })
-    }
+    return (
+        <Card style={{width: '18rem'}}>
+            <form onSubmit={submitHandler}>
+                <div>
+                    <p>Data:</p>
+                    <DatePicker
+                        name='date'
+                        selected={date}
+                        // onChange={onChangeUser}
+                    />
+                </div>
 
-      render() {
-        const { data, username, email, phone, message_date, sender, receiver, content} = this.state
-        return (
-            <Card style={{width: '18rem'}}>
-                <form onSubmit={this.submitHandler}>
-                    <div>
-                        <p>Data:</p>
-                        <DatePicker
-                            selected={data}
-                            onChange={this.changeDataHandler}
-                        />
-                    </div>
+                <div>
+                    <p>Name:</p>
+                    <input type ='text' name='name' value={users.name} onChange={onChangeUser} />
+                </div>
 
-                    <div>
-                        <p>Username:</p>
-                        <input type ='text' name='username' value={username} onChange={this.changeHandler} />
-                    </div>
+                <div>
+                    <p>Email:</p>
+                    <input type ='email' name='email' value={users.email} onChange={onChangeUser} />
+                </div>
 
-                    <div>
-                        <p>Email:</p>
-                        <input type ='text' name='email' value={email} onChange={this.changeHandler} />
-                    </div>
+                <div>
+                    <p>Phone:</p>
+                    <input type ='text' name='phone' value={users.phone} onChange={onChangeUser} />
+                </div>
 
-                    <div>
-                        <p>Phone:</p>
-                        <input type ='text' name='phone' value={phone} onChange={this.changeHandler} />
-                    </div>
+                <div>
+                    <p>Message Date:</p>
+                    <input type ='text' name='date' value={message.date} onChange={onChangeMessage} />
+                </div>
 
-                    <div>
-                        <p>Message Date:</p>
-                        <input type ='text' name='message_date' value={message_date} onChange={this.changeHandler} />
-                    </div>
+                <div>
+                    <p>Sender:</p>
+                    <input type ='text' name='sender' value={message.name} onChange={onChangeMessage} />
+                </div>
 
-                    <div>
-                        <p>Sender:</p>
-                        <input type ='text' name='username' value={username} onChange={this.changeHandler} />
-                    </div>
+                <div>
+                    <p>Receiver:</p>
+                    <input type ='text' name='receiver' value={message.receiver} onChange={onChangeMessage} />
+                </div>
 
-                    <div>
-                        <p>Receiver:</p>
-                        <input type ='text' name='receiver' value={receiver} onChange={this.changeHandler} />
-                    </div>
-
-                    <div>
-                        <p>Content:</p>
-                        <textarea type ='text' name='content' value={content} onChange={this.changeHandler}></textarea>
-                    </div>
-                    
-                    <button type='submit'>Submit</button>
-                </form>
-            </Card>
-        );
-      }
+                <div>
+                    <p>Content:</p>
+                    <textarea type ='text' name='content' value={message.content} onChange={onChangeMessage}></textarea>
+                </div>
+                
+                <button type='submit'>Submit</button>
+            </form>
+        </Card>
+    )
 }
-
 export default HomeScreen

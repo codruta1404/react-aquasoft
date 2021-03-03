@@ -1,10 +1,11 @@
 import React, {useState} from 'react'
-import { Card } from 'react-bootstrap';
+import { useHistory  } from 'react-router-dom';
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import axios from 'axios'
 
-const HomeScreen = () => {        
+const HomeScreen = () => { 
+    let history = useHistory();       
     const [users, setUsers] = useState({
         name: '',
         email:'',
@@ -17,7 +18,7 @@ const HomeScreen = () => {
         date: new Date(),
         sender: '',
         receiver: '',
-        content: '',
+        message_content: '',
     })
 
     const onChangeUser = (e) => {
@@ -31,14 +32,22 @@ const HomeScreen = () => {
     const submitHandler = (e) => {
         e.preventDefault()
         alert(`${users.name} sent the message to ${message.receiver}`)
-        const my_data = {...users, ...date, ...message}
+        const my_data = {
+            users: users,
+            date: date,
+            messages: message,
+        }
 
-        const my_post = axios.post('http://localhost:5000/post', JSON.stringify(my_data))
-        console.log(my_post)
+        axios.post('http://localhost:5000/post', my_data)
     }
 
+
+    const redirectHandler = () => {
+        history.push('/messages')
+    }
     return (
-        <Card style={{width: '18rem'}}>
+        <div>
+            <h1>Home Screen</h1>
             <form onSubmit={submitHandler}>
                 <div>
                     <p>Data:</p>
@@ -81,12 +90,15 @@ const HomeScreen = () => {
 
                 <div>
                     <p>Content:</p>
-                    <textarea type ='text' name='content' value={message.content} onChange={onChangeMessage}></textarea>
+                    <textarea type ='text' name='message_content' value={message.message_content} onChange={onChangeMessage}></textarea>
                 </div>
                 
                 <button type='submit'>Submit</button>
+                
             </form>
-        </Card>
+            <button onClick={redirectHandler}>Page 2</button>
+            
+        </div>
     )
 }
 export default HomeScreen

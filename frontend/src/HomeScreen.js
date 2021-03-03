@@ -4,49 +4,7 @@ import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import axios from 'axios'
 
-const HomeScreen = () => {    
-    // constructor(props) {
-    //     super(props)
-    //     this.state = {
-    //         users: [{
-    //             name: '',
-    //             email:'',
-    //             phone: '',
-    //         }],
-
-    //         data: new Date(),
-
-    //         message: [{
-    //             message_date: new Date(),
-    //             sender: '',
-    //             receiver: '',
-    //             content: '',
-    //         }]
-    //     }
-    // }
-
-    // changeDataHandler = (event) => {
-    //     this.setState({data: event});
-    // }
-
-    // changeHandler = (event) => {
-    //     this.setState({[event.target.name]: event.target.value});
-
-    // }
-
-    // submitHandler = (event) => {
-    //     event.preventDefault()
-    //     alert(`${this.state.name} sent the message to ${this.state.receiver}`)
-    //     axios.post('http://localhost:5000/post', this.state)
-    //     .then(res => {
-    //         console.log(res);
-    //     })
-    //     .catch(err => {
-    //         console.log(err);
-    //     })
-    // }
-
-    
+const HomeScreen = () => {        
     const [users, setUsers] = useState({
         name: '',
         email:'',

@@ -3,6 +3,7 @@ import { useHistory  } from 'react-router-dom';
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import axios from 'axios'
+import { Form, Card, Button } from 'react-bootstrap';
 
 const HomeScreen = () => { 
     let history = useHistory();       
@@ -12,7 +13,7 @@ const HomeScreen = () => {
         phone: '',
     })
 
-    const date = new Date()
+    const [date, setDate] = useState(new Date())
 
     const [message, setMessage] = useState({
         date: new Date(),
@@ -46,15 +47,14 @@ const HomeScreen = () => {
         history.push('/messages')
     }
     return (
-        <div>
-            <h1>Home Screen</h1>
-            <form onSubmit={submitHandler}>
+        <Card className="bg-dark text-white block-example border border-dark" style={{ width: '18rem', 'marginLeft': 'auto',
+        'marginRight': 'auto' }}>
+            <h2>Send a message</h2>
+            <Form onSubmit={submitHandler}>
                 <div>
                     <p>Data:</p>
-                    <DatePicker
-                        name='date'
-                        selected={date}
-                        // onChange={onChangeUser}
+                    <DatePicker  selected={date} 
+                        onChange={date => setDate(date)}
                     />
                 </div>
 
@@ -93,12 +93,10 @@ const HomeScreen = () => {
                     <textarea type ='text' name='message_content' value={message.message_content} onChange={onChangeMessage}></textarea>
                 </div>
                 
-                <button type='submit'>Submit</button>
-                
-            </form>
-            <button onClick={redirectHandler}>Page 2</button>
-            
-        </div>
+                <Button style={{'marginRight': '20px'}} type='submit'>Submit</Button>
+                <Button style={{'marginLeft': '35px'}} onClick={redirectHandler}>Messages Page</Button>
+            </Form>
+        </Card>
     )
 }
 export default HomeScreen

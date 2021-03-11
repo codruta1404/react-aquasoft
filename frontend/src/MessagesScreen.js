@@ -1,29 +1,37 @@
-import axios from 'axios'
-import React, {useEffect, useState} from 'react'
+import React, {useEffect} from 'react'
 import {Card, Button} from 'react-bootstrap'
+import { useDispatch, useSelector } from 'react-redux'
+import messageAction from './actions/messageAction'
+
 
 const MessagesScreen = () => {
-    const[messages, setMessages] = useState([]);
+    // const[messages, setMessages] = useState([]);
 
-    useEffect( () => {
-        const fetchData = async () => {
-            const result = await axios(
-              'http://localhost:5000/',
-            );
+    // useEffect( () => {
+    //     const fetchData = async () => {
+    //         const result = await axios(
+    //           'http://localhost:5000/',
+    //         );
        
-            setMessages(result.data);
-            console.log(result.data);
-          };
+    //         setMessages(result.data);
+    //         console.log(result.data);
+    //       };
        
-          fetchData();
-    }, []);
+    //       fetchData();
+    // }, []);
+
+    const messages = useSelector(state => state.messages)
+    console.log(messages)
+    const dispatch = useDispatch()
+
 
     const getList = () => {
-        fetch('http://localhost:5000/').then((res) => {
-            res.json().then((resp) => {
-                setMessages(resp)
-            })
-        })
+        // fetch('http://localhost:5000/').then((res) => {
+        //     res.json().then((resp) => {
+        //         setMessages(resp)
+        //     })
+        // })
+        return messages
     }
 
     const fetchDelete = (userid) => {
@@ -38,6 +46,11 @@ const MessagesScreen = () => {
         }
     }
 
+    useEffect(() => {
+        console.log('Olla');
+        dispatch(messageAction());
+    }, [dispatch]);
+
     const renderCards = (card, index) => {
         return (
             <Card className="bg-dark text-white block-example border border-dark" style={{ width: '23rem', 'margin-left': '10px' }} key={index}>
@@ -49,6 +62,8 @@ const MessagesScreen = () => {
         </Card>
         )
     }
+
+
     return (
         <div className='row'>
             {messages.map((x,i) =>{
@@ -64,6 +79,7 @@ const MessagesScreen = () => {
             )
             })} 
         </div>
+
     )
 }
 

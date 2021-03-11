@@ -4,6 +4,7 @@ import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import axios from 'axios'
 import { Form, Card, Button } from 'react-bootstrap';
+import {useSelector} from 'react-redux'
 
 const HomeScreen = () => { 
     let history = useHistory();       
